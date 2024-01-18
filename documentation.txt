@@ -192,3 +192,73 @@ In the `outputs.tf` file of the AKS cluster module, we define important output v
 
 ## Summary
 By defining these output variables, we can easily retrieve and use key information about our AKS cluster, such as its name, ID, and configuration details for Kubernetes management.
+
+# Main Terraform Configuration for Azure Kubernetes Service (AKS)
+
+## Overview
+The main Terraform configuration (`main.tf`) in the `aks-terraform` project directory. The configuration includes defining the Azure provider and input variables for secure authentication.
+
+## Azure Provider Setup
+
+### `main.tf`
+- **Provider Block**:
+  - The `azurerm` provider block enables authentication to Azure using service principal credentials. 
+  - It includes settings for `client_id`, `client_secret`, `subscription_id`, and `tenant_id`.
+
+### Defining Input Variables
+
+### `variables.tf`
+- **client_id**: 
+  - Description: The Client ID for the Azure Service Principal.
+  - Type: String
+- **client_secret**: 
+  - Description: The Client Secret for the Azure Service Principal.
+  - Type: String
+- **subscription_id**: 
+  - Description: The Subscription ID for Azure.
+  - Type: String
+- **tenant_id**: 
+  - Description: The Tenant ID for Azure.
+  - Type: String
+
+## Secure Credential Management
+- Store the values for `client_id` and `client_secret` as environment variables to ensure your credentials remain secure and are not exposed in your configuration files.
+
+# Networking Module Integration in Main Terraform Configuration
+
+## Adding the Networking Module in `main.tf`
+- **Module "networking"**:
+  - **Source**: Path to your networking module (e.g., `./networking-module`).
+  - **Input Variables**:
+    - `resource_group_name`: "networking-resource-group"
+    - `location`: "UK South" (or your preferred Azure region)
+    - `vnet_address_space`: ["10.0.0.0/16"]
+    
+# Integrating Cluster Module in Main Configuration
+
+## Configuration in `main.tf`
+- **Module "cluster"**:
+  - **Source**: Path to your cluster module (e.g., `./cluster-module`).
+  - **Input Variables**:
+    - `cluster_name`: "terraform-aks-cluster"
+    - `location`: "UK South" (or your preferred Azure region)
+    - `dns_prefix`: "myaks-project"
+    - `kubernetes_version`: "1.26.6"
+    - `service_principal_client_id`: (Set to your service principal client ID)
+    - `service_principal_secret`: (Set to your service principal secret)
+    - Networking-related variables: Utilize output variables from the networking module (e.g., `resource_group_name`, `vnet_id`, etc.)
+
+# Initializing and Applying Terraform Configuration
+
+## Steps to Follow
+
+### 1. Initialize Terraform
+- Run `terraform init` in the main project directory. This command sets up the project for Terraform.
+
+### 2. Apply Configuration
+- Execute `terraform apply` to start creating your infrastructure, including networking resources and the AKS cluster.
+
+### 3. Secure State File
+- Add the Terraform state file (`.tfstate`) to your `.gitignore` to prevent exposing any sensitive data.
+
+These steps will initiate the infrastructure creation process using your Terraform configuration.
