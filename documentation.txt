@@ -102,3 +102,28 @@
 - Ensure accuracy and clarity in documentation for effective knowledge sharing.
 - Regularly update the documentation to reflect changes in the containerization process or Docker commands used.
 - The cleanup process is important to prevent resource hogging and to maintain a lean development environment.
+
+#Terraform
+
+## Azure Kubernetes Service Infrastructure Setup with Terraform
+
+### Setting Up Variables in `variables.tf`
+
+#### What I Did
+- Created a `variables.tf` file within the networking module.
+
+#### Why I Did It
+- **Flexibility**: To adjust network settings without modifying the main code.
+- **Customization**: To tailor infrastructure for different requirements.
+- **Organization**: To keep the configuration clean and easy to understand.
+
+### Defining Networking Resources in `main.tf`
+
+#### What I Did
+- Defined essential networking resources like Azure Resource Group, VNet, Subnets, and NSG in the `main.tf` file.
+
+#### Why I Did It
+- **Azure Resource Group**: To organize all networking resources under a single administrative boundary.
+- **Virtual Network (VNet)**: To create an isolated network environment for the AKS cluster.
+- **Control Plane & Worker Node Subnets**: To allocate specific network segments for AKS components.
+- **Network Security Group (NSG)**: To establish security rules, enhancing the security of the AKS cluster.
