@@ -103,27 +103,33 @@
 - Regularly update the documentation to reflect changes in the containerization process or Docker commands used.
 - The cleanup process is important to prevent resource hogging and to maintain a lean development environment.
 
-#Terraform
+# Terraform Azure Kubernetes Service Infrastructure Setup
 
-## Azure Kubernetes Service Infrastructure Setup with Terraform
+## Overview
 
-### Setting Up Variables in `variables.tf`
+This guide outlines the process of setting up the Azure Kubernetes Service (AKS) infrastructure using Terraform. Terraform allows us to define and manage our infrastructure as code, providing flexibility, customization, and organization to our network configuration.
 
-#### What I Did
-- Created a `variables.tf` file within the networking module.
+## Setting Up Variables
 
-#### Why I Did It
-- **Flexibility**: To adjust network settings without modifying the main code.
-- **Customization**: To tailor infrastructure for different requirements.
-- **Organization**: To keep the configuration clean and easy to understand.
+### `variables.tf`
 
-### Defining Networking Resources in `main.tf`
+In the networking module, we create a `variables.tf` file to define variables. These variables serve several important purposes:
 
-#### What I Did
-- Defined essential networking resources like Azure Resource Group, VNet, Subnets, and NSG in the `main.tf` file.
+- **Flexibility**: Variables allow us to easily adjust network settings without modifying the main code, making it adaptable to changing requirements.
+- **Customization**: We can tailor the infrastructure to specific needs by configuring variables with different values.
+- **Organization**: Variables keep the configuration clean and easy to understand, providing a clear separation of concerns.
 
-#### Why I Did It
-- **Azure Resource Group**: To organize all networking resources under a single administrative boundary.
-- **Virtual Network (VNet)**: To create an isolated network environment for the AKS cluster.
-- **Control Plane & Worker Node Subnets**: To allocate specific network segments for AKS components.
-- **Network Security Group (NSG)**: To establish security rules, enhancing the security of the AKS cluster.
+## Defining Networking Resources
+
+### `main.tf`
+
+In the `main.tf` file of the networking module, we define essential networking resources required for our AKS infrastructure. These resources include:
+
+- **Azure Resource Group**: An Azure Resource Group is used to organize all networking resources under a single administrative boundary. This simplifies resource management and maintenance.
+- **Virtual Network (VNet)**: We create a Virtual Network to establish an isolated network environment for the AKS cluster. This VNet ensures network isolation and proper segmentation.
+- **Control Plane & Worker Node Subnets**: We define Control Plane and Worker Node Subnets within the VNet. These subnets allocate specific network segments for AKS components, separating the control plane from worker nodes.
+- **Network Security Group (NSG)**: An NSG is utilized to enforce security rules that enhance the overall security of the AKS cluster. It provides control over inbound and outbound traffic, enhancing network security.
+
+By defining these networking resources, we establish a strong foundation for our AKS infrastructure, ensuring it meets the requirements of flexibility, customization, and organization while enhancing security.
+
+
