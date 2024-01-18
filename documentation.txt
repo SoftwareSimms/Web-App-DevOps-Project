@@ -1,0 +1,104 @@
+# Version Control Process
+
+## Initial Setup
+- **Forking the Repository**: A fork of the existing repository was created on GitHub to start independent development work.
+
+## Feature Development: Adding Delivery Date
+- **Issue Creation**: Opened a new issue in the GitHub repository, describing the need to add a 'Delivery Date' field to the Microsoft Azure SQL Server database.
+- **Branch Creation**: Created a feature branch named `feature/add-delivery-date` from the main branch to work on this specific feature.
+- **Code Modification**:
+  - Edited `app.py` to implement the functionality of adding a 'Delivery Date' field to the database.
+  - Updated `orders.html` to display the new 'Delivery Date' field.
+- **Pushing Changes**:
+  - Committed the changes and used `git push` to upload the updates to the `feature/add-delivery-date` branch on GitHub.
+- **Pull Request for Peer Review**:
+  - Created a pull request to merge changes from `feature/add-delivery-date` into the `main` branch.
+  - The pull request was titled appropriately and included a detailed description for peer review.
+
+## Feature Integration
+- **Merging the Feature**:
+  - After review and approval, the pull request was merged, and the `main` branch was updated with the new 'Delivery Date' feature.
+
+## Reverting the Feature
+- **Decision to Revert**:
+  - Later, it was decided that the 'Delivery Date' feature was unnecessary.
+- **Creating a Revert Branch**: 
+  - Created a new branch named `revert/delivery-date-feature` for handling the revert process.
+- **Reverting Changes**:
+  - Performed a `git revert` to the commit prior to the merge of the 'Delivery Date' feature.
+  - Ensured that the revert commit message clearly explained the reason for the revert.
+- **Finalizing Revert**:
+  - Pushed the revert commit to the `revert/delivery-date-feature` branch.
+  - Opened a new pull request to merge the revert changes into the `main` branch.
+- **Completing the Revert Merge**:
+  - After review, the pull request was merged, effectively reverting the `main` branch to its state before the 'Delivery Date' feature was added.
+
+### Notes:
+- **Commit Messages**: Ensured that all commit messages were clear and descriptive of the changes made and the purpose of each commit.
+- **Documentation and Comments**: Updated relevant documentation and code comments to reflect changes during each step of the process.
+- **Testing**: Before each push and pull request, local testing was performed to ensure functionality and to prevent integration issues.
+
+# Containerization Process
+
+### Objective
+- Describe the purpose of containerizing the application. Mention the benefits such as consistency across environments, ease of deployment, etc.
+
+### Creating Dockerfile
+
+- **Base Image**: Explain why you chose the specific base image (e.g., `python:3.8-slim`).
+- **Setting Up the Working Directory**: Document the command to set up the working directory in the Docker container (e.g., `WORKDIR /app`).
+- **Copying Application Files**: Include the command for copying application files into the container (e.g., `COPY . /app`).
+- **Installing Dependencies**: Detail the steps for installing system dependencies and any specific libraries.
+- **Python Dependencies**: Mention how `requirements.txt` is used to install Python packages.
+- **Exposing Ports**: Document the ports that are exposed for the application.
+- **Startup Command**: Include the command that runs the application within the container.
+
+## Docker Commands
+
+### Building Image
+- **Command**: `docker build -t <image-name> .`
+- **Explanation**: Describes how to build the Docker image from the Dockerfile.
+
+### Running Containers
+- **Command**: `docker run -d -p <host-port>:<container-port> <image-name>`
+- **Explanation**: Details on how to run the container, mapping container ports to host ports.
+
+### Tagging for Docker Hub
+- **Command**: `docker tag <local-image-name> <docker-hub-username>/<image-name>:<tag>`
+- **Explanation**: Describes how to tag a local image for pushing to Docker Hub.
+
+### Pushing to Docker Hub
+- **Command**: `docker push <docker-hub-username>/<image-name>:<tag>`
+- **Explanation**: Details on how to push the tagged image to Docker Hub.
+
+## Image Information
+
+- **Image Name and Tags**: Document the Docker image name and tags used.
+- **Usage Instructions**: Provide any specific instructions or prerequisites needed to use the Docker image.
+
+## Cleanup
+
+### Remove Containers
+
+#### Listing Containers
+- **Command**: `docker ps -a`
+- **Explanation**: Lists all containers, including the stopped ones.
+
+#### Removing Containers
+- **Command**: `docker rm <container-id>`
+- **Explanation**: Removes specified containers. Useful for cleaning up resources.
+
+### Remove Images
+
+#### Listing Images
+- **Command**: `docker images -a`
+- **Explanation**: Shows all Docker images on the host.
+
+#### Removing Images
+- **Command**: `docker rmi <image-id>`
+- **Explanation**: Removes specified Docker images. Helps in reclaiming disk space.
+
+## Note
+- Ensure accuracy and clarity in documentation for effective knowledge sharing.
+- Regularly update the documentation to reflect changes in the containerization process or Docker commands used.
+- The cleanup process is important to prevent resource hogging and to maintain a lean development environment.
