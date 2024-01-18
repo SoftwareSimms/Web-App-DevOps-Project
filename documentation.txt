@@ -103,33 +103,92 @@
 - Regularly update the documentation to reflect changes in the containerization process or Docker commands used.
 - The cleanup process is important to prevent resource hogging and to maintain a lean development environment.
 
-# Terraform Azure Kubernetes Service Infrastructure Setup
+# Terraform Azure Network Infrastructure Setup
 
 ## Overview
 
-This guide outlines the process of setting up the Azure Kubernetes Service (AKS) infrastructure using Terraform. Terraform allows us to define and manage our infrastructure as code, providing flexibility, customization, and organization to our network configuration.
+This guide provides a step-by-step process to set up the Azure Kubernetes Service (AKS) infrastructure using Terraform. Terraform lets us define our infrastructure as code, making it easier to manage and update. This approach brings flexibility, customization, and a well-organized structure to our network setup.
 
 ## Setting Up Variables
 
 ### `variables.tf`
 
-In the networking module, we create a `variables.tf` file to define variables. These variables serve several important purposes:
+The `variables.tf` file in the networking module defines several variables. These variables make our configuration flexible, customizable, and well-organized.
 
-- **Flexibility**: Variables allow us to easily adjust network settings without modifying the main code, making it adaptable to changing requirements.
-- **Customization**: We can tailor the infrastructure to specific needs by configuring variables with different values.
-- **Organization**: Variables keep the configuration clean and easy to understand, providing a clear separation of concerns.
+- **Resource Group Name**: Identifies the Azure Resource Group for networking resources. It's set to `myResourceGroup` by default but can be changed as needed.
+- **Location**: Specifies the Azure region for deploying resources. Default is set to `East US`.
+- **Virtual Network Address Space**: Defines the address range for the Virtual Network, with a default set to `10.0.0.0/16`.
 
 ## Defining Networking Resources
 
 ### `main.tf`
 
-In the `main.tf` file of the networking module, we define essential networking resources required for our AKS infrastructure. These resources include:
+The `main.tf` file in the networking module includes definitions for critical networking resources:
 
-- **Azure Resource Group**: An Azure Resource Group is used to organize all networking resources under a single administrative boundary. This simplifies resource management and maintenance.
-- **Virtual Network (VNet)**: We create a Virtual Network to establish an isolated network environment for the AKS cluster. This VNet ensures network isolation and proper segmentation.
-- **Control Plane & Worker Node Subnets**: We define Control Plane and Worker Node Subnets within the VNet. These subnets allocate specific network segments for AKS components, separating the control plane from worker nodes.
-- **Network Security Group (NSG)**: An NSG is utilized to enforce security rules that enhance the overall security of the AKS cluster. It provides control over inbound and outbound traffic, enhancing network security.
+- **Azure Resource Group (`azurerm_resource_group`)**: Organizes all networking resources under a single group, simplifying management.
+- **Virtual Network (`azurerm_virtual_network`)**: Sets up an isolated network (VNet) for the AKS cluster, ensuring isolation and segmentation.
+- **Subnets for Control Plane and Worker Nodes (`azurerm_subnet`)**: Allocates specific network segments within the VNet for AKS components. The control plane and worker nodes are separated for enhanced organization and security.
+- **Network Security Group (`azurerm_network_security_group`)**: Implements security rules for the AKS cluster, controlling inbound and outbound traffic. This includes rules for Kubernetes API server and SSH access.
 
-By defining these networking resources, we establish a strong foundation for our AKS infrastructure, ensuring it meets the requirements of flexibility, customization, and organization while enhancing security.
+### Security Rules in NSG
 
+- **Kubernetes API Server Rule**: Allows inbound TCP traffic on port 443 from a specific source IP.
+- **SSH Rule**: Permits inbound SSH (port 22) traffic from the same specific source IP.
 
+## Outputs Defined
+
+### `outputs.tf`
+
+This file specifies the outputs that provide important information after deploying the resources:
+
+- **VNet ID (`vnet_id`)**: Outputs the ID of the Virtual Network.
+- **Control Plane Subnet ID (`control_plane_subnet_id`)**: Provides the ID for the control plane subnet.
+- **Worker Node Subnet ID (`worker_node_subnet_id`)**: Gives the ID for the worker node subnet.
+- **Networking Resource Group Name (`networking_resource_group_name`)**: Outputs the name of the Azure Resource Group used.
+- **AKS NSG ID (`aks_nsg_id`)**: Outputs the ID of the Network Security Group.
+
+By following these steps and using the provided Terraform code, you can efficiently set up a robust and secure AKS infrastructure in Azure.
+
+# Terraform Configuration for Azure Kubernetes Service (AKS) Cluster
+
+## Provider Block
+- **azurerm**: This provider block indicates that Azure is the cloud provider for this Terraform configuration.
+
+## Resource: azurerm_kubernetes_cluster
+- **name**: Specifies the name of the AKS cluster, which is pulled from a variable.
+- **location**: Determines the location/region where the AKS cluster will be created.
+- **resource_group_name**: The name of the resource group in Azure where the AKS cluster will reside.
+- **dns_prefix**: Sets a DNS prefix for the AKS cluster, utilized for the Kubernetes API server FQDN (Fully Qualified Domain Name).
+
+## Default Node Pool
+This section defines the default node pool for the AKS cluster.
+- **name**: A name for the node pool.
+- **node_count**: The number of nodes (Virtual Machines) in the node pool.
+- **vm_size**: The size of the Virtual Machines in the node pool.
+
+## Service Principal
+This part provides details about the service principal used by AKS for interacting with other Azure services.
+- **client_id**: The Client ID of the service principal.
+- **client_secret**: The Client Secret of the service principal.
+
+# Outputs for Azure Kubernetes Service (AKS) Cluster Module
+
+## Introduction
+In the `outputs.tf` file of the AKS cluster module, we define important output variables. These variables will capture essential information about the provisioned AKS cluster.
+
+## Output Variables
+
+### `aks_cluster_name`
+- **Description**: This variable holds the name of the AKS cluster that has been provisioned.
+- **Value**: The actual name of the AKS cluster as it's created in Azure.
+  
+### `aks_cluster_id`
+- **Description**: Stores the unique identifier (ID) of the provisioned AKS cluster.
+- **Value**: The ID is assigned by Azure when the AKS cluster is created.
+
+### `aks_kubeconfig`
+- **Description**: Captures the Kubernetes configuration file. This file is crucial for interacting with and managing the AKS cluster using `kubectl`.
+- **Value**: It's the raw configuration file needed to connect to and manage the AKS cluster.
+
+## Summary
+By defining these output variables, we can easily retrieve and use key information about our AKS cluster, such as its name, ID, and configuration details for Kubernetes management.
