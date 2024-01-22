@@ -64,3 +64,22 @@ variable "worker_node_subnet_id" {
   description = "ID of the worker node subnet within the VNet, created in the networking module."
   type        = string
 }
+
+# Node count for the AKS cluster's default node pool
+variable "node_count" {
+  description = "The number of nodes in the AKS cluster's default node pool."
+  type        = number
+}
+
+# VM size for the nodes in the AKS cluster
+variable "vm_size" {
+  description = "The size of the VMs for the nodes in the AKS cluster."
+  type        = string
+}
+
+# Tags to be applied to the AKS cluster resources
+variable "tags" {
+  description = "A map of tags to be applied to the AKS cluster resources."
+  type        = map(string)
+  default     = {}
+}

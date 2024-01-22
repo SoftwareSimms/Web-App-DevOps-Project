@@ -250,8 +250,6 @@ The main Terraform configuration (`main.tf`) in the `aks-terraform` project dire
 
 # Initializing and Applying Terraform Configuration
 
-## Steps to Follow
-
 ### 1. Initialize Terraform
 - Run `terraform init` in the main project directory. This command sets up the project for Terraform.
 
