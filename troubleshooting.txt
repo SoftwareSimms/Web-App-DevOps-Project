@@ -1,8 +1,4 @@
-flask==2.2.2
-pyodbc==4.0.39
-SQLAlchemy==2.0.21
-werkzeug===2.2.3 
-qlx8Q~15d6I5N~V6iomCOx4aUQyaEHuj11wJ_dnL
+
 az ad sp create-for-rbac --name myServicePrincipal --role contributor --scopes /subscriptions/
 f2c7dfb9-39bc-4e0f-af63-34531bf7ea48/resourceGroups/js-resources
 
@@ -19,4 +15,7 @@ az ad sp list --display-name myServicePrincipal
 
 az ad sp create-for-rbac --name myServicePrincipal --role contributor --scopes /subscriptions/
 Found an existing application instance: (id) e53a3d25-9e00-44b8-b290-abf14cd2703c. We will patch it.
+Insufficient privileges to complete the operation.
+
+ az ad sp credential reset --id 5e596491-0d77-4188-ba56-146142b3a31f
 Insufficient privileges to complete the operation.
