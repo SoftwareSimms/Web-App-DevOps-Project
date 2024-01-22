@@ -19,3 +19,12 @@ Insufficient privileges to complete the operation.
 
  az ad sp credential reset --id 5e596491-0d77-4188-ba56-146142b3a31f
 Insufficient privileges to complete the operation.
+
+PS C:\Users\jessi\OneDrive\Documents\GitHub\Web-App-DevOps-Project> az ad sp create-for-rbac --name jack.simms.aicore --role contributor --scopes /subscriptions/f2c7dfb9-39bc-4e0f-af63-34531bf7ea48
+Creating 'contributor' role assignment under scope '/subscriptions/f2c7dfb9-39bc-4e0f-af63-34531bf7ea48'
+The output includes credentials that you must protect. Be sure that you do not include these credentials in your code or check the credentials into your source control. For more information, see https://aka.ms/azadsp-cli
+{
+  "appId": "27b56e0e-acb6-426d-8a47-1bfe9c11663f",
+  "displayName": "jack.simms.aicore",
+  "password": "fCt8Q~olPLPsYyugKgPRzaWXmIW-Yxdk-qMi1bzk",
+  "tenant": "47d4542c-f112-47f4-92c7-a838d8a5e8ef"

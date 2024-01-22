@@ -1,262 +1,139 @@
-# Version Control Process
+# Web-App DevOps Project Documentation
 
-## Initial Setup
-- **Forking the Repository**: A fork of the existing repository was created on GitHub to start independent development work.
+Welcome to my repository where I manage the infrastructure for an Azure Kubernetes Service (AKS) deployment using Terraform. The documentation here details the version control workflow, containerisation practices with Docker, and the Terraform configurations for setting up network infrastructure and the AKS cluster.
 
-## Feature Development: Adding Delivery Date
-- **Issue Creation**: Opened a new issue in the GitHub repository, describing the need to add a 'Delivery Date' field to the Microsoft Azure SQL Server database.
-- **Branch Creation**: Created a feature branch named `feature/add-delivery-date` from the main branch to work on this specific feature.
-- **Code Modification**:
-  - Edited `app.py` to implement the functionality of adding a 'Delivery Date' field to the database.
-  - Updated `orders.html` to display the new 'Delivery Date' field.
-- **Pushing Changes**:
-  - Committed the changes and used `git push` to upload the updates to the `feature/add-delivery-date` branch on GitHub.
-- **Pull Request for Peer Review**:
-  - Created a pull request to merge changes from `feature/add-delivery-date` into the `main` branch.
-  - The pull request was titled appropriately and included a detailed description for peer review.
+## Version Control Workflow
 
-## Feature Integration
-- **Merging the Feature**:
-  - After review and approval, the pull request was merged, and the `main` branch was updated with the new 'Delivery Date' feature.
+### Setting the Stage
+- **Repository Forking**: I forked the main repository on GitHub for my independent development work.
 
-## Reverting the Feature
-- **Decision to Revert**:
-  - Later, it was decided that the 'Delivery Date' feature was unnecessary.
-- **Creating a Revert Branch**: 
-  - Created a new branch named `revert/delivery-date-feature` for handling the revert process.
-- **Reverting Changes**:
-  - Performed a `git revert` to the commit prior to the merge of the 'Delivery Date' feature.
-  - Ensured that the revert commit message clearly explained the reason for the revert.
-- **Finalizing Revert**:
-  - Pushed the revert commit to the `revert/delivery-date-feature` branch.
-  - Opened a new pull request to merge the revert changes into the `main` branch.
-- **Completing the Revert Merge**:
-  - After review, the pull request was merged, effectively reverting the `main` branch to its state before the 'Delivery Date' feature was added.
+### Developing New Features
+- **Issue Tracking**: I initiated new issues to track enhancements such as adding a 'Delivery Date' field to our Azure SQL database.
+- **Branch Strategy**: For each feature, like `feature/add-delivery-date`, I created a separate branch from the main.
+- **Coding and Committing**: I implemented the 'Delivery Date' feature in `app.py`, updated `orders.html` for its display, and committed the changes with detailed messages.
+- **Code Review**: I submitted pull requests for peer review before merging any code into the main branch.
 
-### Notes:
-- **Commit Messages**: Ensured that all commit messages were clear and descriptive of the changes made and the purpose of each commit.
-- **Documentation and Comments**: Updated relevant documentation and code comments to reflect changes during each step of the process.
-- **Testing**: Before each push and pull request, local testing was performed to ensure functionality and to prevent integration issues.
+### Integrating Features
+- **Merging**: I merged approved features into the main branch after thorough reviews.
 
-# Containerization Process
+### Feature Reversion
+- **Reversion Decision**: When a feature was deemed unnecessary, I made the decision to revert.
+- **Reversion Process**: I created a branch `revert/delivery-date-feature` and performed a `git revert` with a clear explanation in the commit message.
+- **Reversion Finalisation**: I merged the revert changes back into the main branch post-review.
+
+### Best Practices
+- **Documentation**: I meticulously documented each step to maintain clarity.
+- **Testing**: Prior to pushing or creating pull requests, I conducted local tests to ensure seamless functionality.
+
+## Containerisation with Docker
 
 ### Objective
-- Describe the purpose of containerizing the application. Mention the benefits such as consistency across environments, ease of deployment, etc.
+- I containerised the application to guarantee consistency across environments and simplify deployment procedures.
 
-### Creating Dockerfile
+### Crafting the Dockerfile
+- **Base Image Selection**: I chose a base image such as `python:3.8-slim` for its balance between functionality and size.
+- **Workspace Configuration**: I documented how to establish the working directory within the container.
+- **Application File Transfer**: I included instructions for transferring application files into the container.
+- **Dependency Management**: I detailed the process for installing both system and Python dependencies.
+- **Port Exposure**: I specified which ports need to be exposed for the application.
+- **Application Execution**: I provided the command to run the application inside the container.
 
-- **Base Image**: Explain why you chose the specific base image (e.g., `python:3.8-slim`).
-- **Setting Up the Working Directory**: Document the command to set up the working directory in the Docker container (e.g., `WORKDIR /app`).
-- **Copying Application Files**: Include the command for copying application files into the container (e.g., `COPY . /app`).
-- **Installing Dependencies**: Detail the steps for installing system dependencies and any specific libraries.
-- **Python Dependencies**: Mention how `requirements.txt` is used to install Python packages.
-- **Exposing Ports**: Document the ports that are exposed for the application.
-- **Startup Command**: Include the command that runs the application within the container.
+### Docker Command Guide
+- **Image Construction**: I described the process to build the Docker image from the Dockerfile.
+- **Container Deployment**: I detailed how to initiate and run the container, including port mapping.
+- **Image Tagging and Pushing**: I explained the method for tagging images for Docker Hub and pushing them.
 
-## Docker Commands
+### Clean-Up Procedures
+- **Container Housekeeping**: Commands for listing and removing containers.
+- **Image Management**: Instructions for listing and deleting images to conserve disk space.
 
-### Building Image
-- **Command**: `docker build -t <image-name> .`
-- **Explanation**: Describes how to build the Docker image from the Dockerfile.
+## Terraform Azure Network Infrastructure Configuration
 
-### Running Containers
-- **Command**: `docker run -d -p <host-port>:<container-port> <image-name>`
-- **Explanation**: Details on how to run the container, mapping container ports to host ports.
+### Overview
+- I've provided a detailed step-by-step guide to set up the AKS infrastructure using Terraform.
 
-### Tagging for Docker Hub
-- **Command**: `docker tag <local-image-name> <docker-hub-username>/<image-name>:<tag>`
-- **Explanation**: Describes how to tag a local image for pushing to Docker Hub.
+### Variables (`variables.tf`)
+- **Resource Group Naming**: I've outlined the Azure Resource Group details.
+- **Deployment Region Specification**: The Azure region for resource deployment is specified.
+- **Virtual Network Addressing**: I've defined the VNet address space.
 
-### Pushing to Docker Hub
-- **Command**: `docker push <docker-hub-username>/<image-name>:<tag>`
-- **Explanation**: Details on how to push the tagged image to Docker Hub.
+### Resource Definitions (`main.tf`)
+- **Resource Grouping**: I've organised resources under a single resource group.
+- **Virtual Network Creation**: An isolated network for AKS is established.
+- **Subnet Allocation**: I've allocated network segments within the VNet for AKS components.
+- **Network Security Protocols**: Security rules are managed through the Network Security Group.
 
-## Image Information
+### Output Variables (`outputs.tf`)
+- I've provided outputs for resource IDs and names post-deployment, including the Virtual Network ID and subnet IDs. These outputs are crucial for referencing and managing the deployed resources efficiently.
 
-- **Image Name and Tags**: Document the Docker image name and tags used.
-- **Usage Instructions**: Provide any specific instructions or prerequisites needed to use the Docker image.
+## Terraform Configuration for Azure Kubernetes Service (AKS) Cluster
 
-## Cleanup
+### Provider Block
+- **azurerm**: This block specifies that Azure is the chosen cloud provider for this Terraform configuration. The use of a specific provider like `azurerm` is crucial because it dictates how Terraform interacts with the respective cloud infrastructure, ensuring that resources are managed in a manner consistent with Azure's architecture and services.
 
-### Remove Containers
+### Resource: azurerm_kubernetes_cluster
+- **name**: The AKS cluster's name is defined here, sourced from a variable. This practice of using variables for resource names enhances flexibility and reusability of the Terraform code.
+- **location**: This parameter sets the geographical location for the AKS cluster, aligning resource deployment with regional preferences and compliance requirements.
+- **resource_group_name**: Specifies the Azure resource group under which the AKS cluster will be managed. Organising resources into groups is vital for efficient resource management and cost tracking.
+- **dns_prefix**: The DNS prefix for the AKS cluster contributes to forming the Fully Qualified Domain Name (FQDN) for the Kubernetes API server, a crucial element for network communication and service discovery.
 
-#### Listing Containers
-- **Command**: `docker ps -a`
-- **Explanation**: Lists all containers, including the stopped ones.
+### Default Node Pool
+- **name**: The name for the default node pool is specified, which is key to identifying and managing the node pool within the AKS cluster.
+- **node_count**: Defines the number of nodes (Virtual Machines) in the node pool, a critical factor for scaling and resource allocation.
+- **vm_size**: The size of the Virtual Machines in the node pool is set, impacting the cluster's performance and resource availability.
 
-#### Removing Containers
-- **Command**: `docker rm <container-id>`
-- **Explanation**: Removes specified containers. Useful for cleaning up resources.
+### Service Principal
+- **client_id** and **client_secret**: These credentials are for the service principal used by AKS to interact with other Azure services. The use of a service principal is fundamental for secure and scoped access to Azure resources.
 
-### Remove Images
+### Outputs for Azure Kubernetes Service (AKS) Cluster Module
 
-#### Listing Images
-- **Command**: `docker images -a`
-- **Explanation**: Shows all Docker images on the host.
+#### Introduction
+- The `outputs.tf` file in the AKS cluster module defines important output variables. These variables are essential for capturing and making use of key information about the provisioned AKS cluster.
 
-#### Removing Images
-- **Command**: `docker rmi <image-id>`
-- **Explanation**: Removes specified Docker images. Helps in reclaiming disk space.
+#### Output Variables
+- **`aks_cluster_name` and `aks_cluster_id`**: These provide the name and unique identifier of the AKS cluster, essential for referencing and managing the cluster within Azure.
+- **`aks_kubeconfig`**: This output captures the Kubernetes configuration file, pivotal for interacting with and managing the AKS cluster using tools like `kubectl`.
 
-## Note
-- Ensure accuracy and clarity in documentation for effective knowledge sharing.
-- Regularly update the documentation to reflect changes in the containerization process or Docker commands used.
-- The cleanup process is important to prevent resource hogging and to maintain a lean development environment.
+## Main Terraform Configuration for Azure Kubernetes Service (AKS)
 
-# Terraform Azure Network Infrastructure Setup
+### Overview
+- The main Terraform configuration (`main.tf`) in the `aks-terraform` project directory is a central piece, defining the Azure provider and input variables for secure authentication.
 
-## Overview
-
-This guide provides a step-by-step process to set up the Azure Kubernetes Service (AKS) infrastructure using Terraform. Terraform lets us define our infrastructure as code, making it easier to manage and update. This approach brings flexibility, customization, and a well-organized structure to our network setup.
-
-## Setting Up Variables
-
-### `variables.tf`
-
-The `variables.tf` file in the networking module defines several variables. These variables make our configuration flexible, customizable, and well-organized.
-
-- **Resource Group Name**: Identifies the Azure Resource Group for networking resources. It's set to `myResourceGroup` by default but can be changed as needed.
-- **Location**: Specifies the Azure region for deploying resources. Default is set to `East US`.
-- **Virtual Network Address Space**: Defines the address range for the Virtual Network, with a default set to `10.0.0.0/16`.
-
-## Defining Networking Resources
-
-### `main.tf`
-
-The `main.tf` file in the networking module includes definitions for critical networking resources:
-
-- **Azure Resource Group (`azurerm_resource_group`)**: Organizes all networking resources under a single group, simplifying management.
-- **Virtual Network (`azurerm_virtual_network`)**: Sets up an isolated network (VNet) for the AKS cluster, ensuring isolation and segmentation.
-- **Subnets for Control Plane and Worker Nodes (`azurerm_subnet`)**: Allocates specific network segments within the VNet for AKS components. The control plane and worker nodes are separated for enhanced organization and security.
-- **Network Security Group (`azurerm_network_security_group`)**: Implements security rules for the AKS cluster, controlling inbound and outbound traffic. This includes rules for Kubernetes API server and SSH access.
-
-### Security Rules in NSG
-
-- **Kubernetes API Server Rule**: Allows inbound TCP traffic on port 443 from a specific source IP.
-- **SSH Rule**: Permits inbound SSH (port 22) traffic from the same specific source IP.
-
-## Outputs Defined
-
-### `outputs.tf`
-
-This file specifies the outputs that provide important information after deploying the resources:
-
-- **VNet ID (`vnet_id`)**: Outputs the ID of the Virtual Network.
-- **Control Plane Subnet ID (`control_plane_subnet_id`)**: Provides the ID for the control plane subnet.
-- **Worker Node Subnet ID (`worker_node_subnet_id`)**: Gives the ID for the worker node subnet.
-- **Networking Resource Group Name (`networking_resource_group_name`)**: Outputs the name of the Azure Resource Group used.
-- **AKS NSG ID (`aks_nsg_id`)**: Outputs the ID of the Network Security Group.
-
-By following these steps and using the provided Terraform code, you can efficiently set up a robust and secure AKS infrastructure in Azure.
-
-# Terraform Configuration for Azure Kubernetes Service (AKS) Cluster
-
-## Provider Block
-- **azurerm**: This provider block indicates that Azure is the cloud provider for this Terraform configuration.
-
-## Resource: azurerm_kubernetes_cluster
-- **name**: Specifies the name of the AKS cluster, which is pulled from a variable.
-- **location**: Determines the location/region where the AKS cluster will be created.
-- **resource_group_name**: The name of the resource group in Azure where the AKS cluster will reside.
-- **dns_prefix**: Sets a DNS prefix for the AKS cluster, utilized for the Kubernetes API server FQDN (Fully Qualified Domain Name).
-
-## Default Node Pool
-This section defines the default node pool for the AKS cluster.
-- **name**: A name for the node pool.
-- **node_count**: The number of nodes (Virtual Machines) in the node pool.
-- **vm_size**: The size of the Virtual Machines in the node pool.
-
-## Service Principal
-This part provides details about the service principal used by AKS for interacting with other Azure services.
-- **client_id**: The Client ID of the service principal.
-- **client_secret**: The Client Secret of the service principal.
-
-# Outputs for Azure Kubernetes Service (AKS) Cluster Module
-
-## Introduction
-In the `outputs.tf` file of the AKS cluster module, we define important output variables. These variables will capture essential information about the provisioned AKS cluster.
-
-## Output Variables
-
-### `aks_cluster_name`
-- **Description**: This variable holds the name of the AKS cluster that has been provisioned.
-- **Value**: The actual name of the AKS cluster as it's created in Azure.
-  
-### `aks_cluster_id`
-- **Description**: Stores the unique identifier (ID) of the provisioned AKS cluster.
-- **Value**: The ID is assigned by Azure when the AKS cluster is created.
-
-### `aks_kubeconfig`
-- **Description**: Captures the Kubernetes configuration file. This file is crucial for interacting with and managing the AKS cluster using `kubectl`.
-- **Value**: It's the raw configuration file needed to connect to and manage the AKS cluster.
-
-## Summary
-By defining these output variables, we can easily retrieve and use key information about our AKS cluster, such as its name, ID, and configuration details for Kubernetes management.
-
-# Main Terraform Configuration for Azure Kubernetes Service (AKS)
-
-## Overview
-The main Terraform configuration (`main.tf`) in the `aks-terraform` project directory. The configuration includes defining the Azure provider and input variables for secure authentication.
-
-## Azure Provider Setup
-
-### `main.tf`
+### Azure Provider Setup
 - **Provider Block**:
-  - The `azurerm` provider block enables authentication to Azure using service principal credentials. 
-  - It includes settings for `client_id`, `client_secret`, `subscription_id`, and `tenant_id`.
+  - The `azurerm` provider block is configured with service principal credentials, enabling Terraform to authenticate and manage resources within Azure securely.
 
-### Defining Input Variables
+### Defining Input Variables (`variables.tf`)
+- **client_id, client_secret, subscription_id, and tenant_id**: These variables are defined for the Azure Service Principal, ensuring secure and specific access to Azure resources.
 
-### `variables.tf`
-- **client_id**: 
-  - Description: The Client ID for the Azure Service Principal.
-  - Type: String
-- **client_secret**: 
-  - Description: The Client Secret for the Azure Service Principal.
-  - Type: String
-- **subscription_id**: 
-  - Description: The Subscription ID for Azure.
-  - Type: String
-- **tenant_id**: 
-  - Description: The Tenant ID for Azure.
-  - Type: String
+### Secure Credential Management
+- It's advised to store `client_id` and `client_secret` as environment variables. This approach safeguards credentials by keeping them out of the Terraform configuration files.
 
-## Secure Credential Management
-- Store the values for `client_id` and `client_secret` as environment variables to ensure your credentials remain secure and are not exposed in your configuration files.
+### Networking Module Integration in Main Terraform Configuration
 
-# Networking Module Integration in Main Terraform Configuration
-
-## Adding the Networking Module in `main.tf`
+#### Adding the Networking Module in `main.tf`
 - **Module "networking"**:
-  - **Source**: Path to your networking module (e.g., `./networking-module`).
-  - **Input Variables**:
-    - `resource_group_name`: "networking-resource-group"
-    - `location`: "UK South" (or your preferred Azure region)
-    - `vnet_address_space`: ["10.0.0.0/16"]
-    
-# Integrating Cluster Module in Main Configuration
+  - The path to the networking module is specified, and input variables like `resource_group_name`, `location`, and `vnet_address_space` are set. This module is crucial for setting up the foundational network infrastructure for the AKS cluster.
 
-## Configuration in `main.tf`
+#### Integrating Cluster Module in Main Configuration
+
+##### Configuration in `main.tf`
 - **Module "cluster"**:
-  - **Source**: Path to your cluster module (e.g., `./cluster-module`).
-  - **Input Variables**:
-    - `cluster_name`: "terraform-aks-cluster"
-    - `location`: "UK South" (or your preferred Azure region)
-    - `dns_prefix`: "myaks-project"
-    - `kubernetes_version`: "1.26.6"
-    - `service_principal_client_id`: (Set to your service principal client ID)
-    - `service_principal_secret`: (Set to your service principal secret)
-    - Networking-related variables: Utilize output variables from the networking module (e.g., `resource_group_name`, `vnet_id`, etc.)
+  - The cluster module's source path is defined along with essential input variables. These include `cluster_name`, `location`, `dns_prefix`, `kubernetes_version`, and service principal details. This module is central to creating and configuring the AKS cluster itself.
 
-# Initializing and Applying Terraform Configuration
+### Initializing and Applying Terraform Configuration
 
-### 1. Initialize Terraform
-- Run `terraform init` in the main project directory. This command sets up the project for Terraform.
+#### Steps
+- **Initialize Terraform**: Run `terraform init` to prepare the project.
+- **Apply Configuration**: Use `terraform apply` to create the infrastructure. This includes both networking resources and the AKS cluster.
+- **Secure State File**: The Terraform state file is added to `.gitignore` for security.
 
-### 2. Apply Configuration
-- Execute `terraform apply` to start creating your infrastructure, including networking resources and the AKS cluster.
+By following these procedures, you can effectively use Terraform to create and manage a robust AKS cluster in Azure. This combination of detailed documentation and structured Terraform code ensures a streamlined and secure deployment process.
 
-### 3. Secure State File
-- Add the Terraform state file (`.tfstate`) to your `.gitignore` to prevent exposing any sensitive data.
+## Terraform AKS Cluster Management
 
-These steps will initiate the infrastructure creation process using your Terraform configuration.
+### Managing the AKS Cluster
+- After deploying the AKS cluster using Terraform, it is crucial to manage and interact with the cluster efficiently.
+- **Azure CLI**: The Azure Command-Line Interface (CLI) is used for obtaining credentials to interact with the AKS cluster. For example, the command `az aks get-credentials --resource-group <resource-group-name> --name <your-aks-cluster-name>` configures the local `kubectl` environment to communicate with your AKS cluster.
+- **Kubernetes Version**: To align with Azure's offerings and ensure compatibility, the Kubernetes version used in the cluster (e.g., `1.26.6`) is specified. This version should be periodically reviewed and updated as needed.
+- **Verifying the Cluster**: Once connected, you can use `kubectl get nodes` to verify the nodes in your AKS cluster. This step confirms that the cluster is operational and that `kubectl` is correctly configured.
