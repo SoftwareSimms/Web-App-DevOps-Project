@@ -137,3 +137,49 @@ By following these procedures, you can effectively use Terraform to create and m
 - **Azure CLI**: The Azure Command-Line Interface (CLI) is used for obtaining credentials to interact with the AKS cluster. For example, the command `az aks get-credentials --resource-group <resource-group-name> --name <your-aks-cluster-name>` configures the local `kubectl` environment to communicate with your AKS cluster.
 - **Kubernetes Version**: To align with Azure's offerings and ensure compatibility, the Kubernetes version used in the cluster (e.g., `1.26.6`) is specified. This version should be periodically reviewed and updated as needed.
 - **Verifying the Cluster**: Once connected, you can use `kubectl get nodes` to verify the nodes in your AKS cluster. This step confirms that the cluster is operational and that `kubectl` is correctly configured.
+
+# Kubernetes Deployment for Flask Web Application
+
+This document outlines the process and configuration used for deploying a Flask web application on an Azure Kubernetes Service (AKS) cluster using Kubernetes manifests, including the rationale behind the deployment strategy and how the application is tested and validated post-deployment.
+
+## Deployment and Service Manifests
+
+The Flask application is containerized using Docker and deployed to AKS with the following Kubernetes manifests:
+
+- **Deployment Manifest**: Defined as `flask-app-deployment`, it manages the lifecycle of the application pods. The manifest specifies 2 replicas for high availability and uses a label selector `app: flask-app` to manage the pods. It points to the Docker image on Docker Hub, with the image version tagged as `latest`. Each pod exposes port 5000, which is the application's port.
+
+- **Service Manifest**: Named `flask-app-service`, it creates an internal service of type `ClusterIP` within the AKS cluster. It uses the same label selector `app: flask-app` to route traffic to the correct pods. The service listens on port 80 and routes traffic to `targetPort` 5000 on the pods.
+
+## Deployment Strategy
+
+The deployment strategy chosen is `RollingUpdate`. This strategy incrementally updates pods instances with new ones, which are created and scheduled before the old ones are terminated. The key benefits of this strategy include:
+
+- **Zero Downtime**: Ensures at least one instance of the pod is running, thus providing service continuity.
+- **Rollback Capabilities**: If something goes wrong, Kubernetes will stop the rollout and rollback to the previous version.
+- **Resource Efficiency**: Only a subset of resources are required during the update, which means that the system doesn't need to double its resource usage.
+
+This strategy aligns with our application's requirement for high availability and the need for updates without service interruption.
+
+## Testing and Validation
+
+Post-deployment, the application was validated by:
+
+- **Port Forwarding**: Temporary port forwarding to `localhost` allowed immediate interaction with the application for testing.
+- **Internal Testing**: Navigating through the application's functionality, especially the orders table and Add Order feature, ensured that the application behaves as expected within the AKS cluster.
+- **Log Inspection**: Checking the logs from the application's pods helped confirm there were no hidden issues.
+
+## Internal Distribution
+
+To distribute the application to other internal users without relying on port forwarding, we plan to:
+
+- **Internal DNS**: Set up an internal DNS to point to the ClusterIP of the service.
+- **Ingress Controller**: Implement an Ingress controller that provides HTTP routing to the service.
+- **Access Policies**: Define RBAC policies to control access within the AKS cluster.
+
+## External Access (If Needed)
+
+Should the need arise to provide external access to the application, we will:
+
+- **Change Service Type**: Update the service from `ClusterIP` to `LoadBalancer` to provide an external IP.
+- **Implement Authentication**: Ensure the application has strong authentication and authorization mechanisms.
+- **Use TLS**: Secure communication with the application using TLS encryption.
