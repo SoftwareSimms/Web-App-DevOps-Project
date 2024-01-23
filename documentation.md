@@ -183,3 +183,62 @@ Should the need arise to provide external access to the application, we will:
 - **Change Service Type**: Update the service from `ClusterIP` to `LoadBalancer` to provide an external IP.
 - **Implement Authentication**: Ensure the application has strong authentication and authorization mechanisms.
 - **Use TLS**: Secure communication with the application using TLS encryption.
+
+# CI/CD Pipeline Documentation
+
+This document outlines the continuous integration and continuous deployment (CI/CD) pipeline for our project, detailing the configuration, settings, and validation steps. The pipeline is designed to integrate with Azure DevOps, Docker Hub, and Azure Kubernetes Service (AKS).
+
+## Pipeline Configuration
+
+### Source Repository
+
+- Platform: GitHub
+- Repository URL: [Provide the link to your GitHub repository]
+- Branch: main (triggered on each commit to the main branch)
+
+### Build Pipeline
+
+- Environment: Azure Pipelines
+- Agent Specification: ubuntu-latest
+
+#### Key Steps:
+
+- **Docker Build and Push:**
+  - Builds the Docker image from the Dockerfile.
+  - Pushes the image to Docker Hub using the service connection established with Docker Hub.
+  - Tags the image with both latest and the specific `$(Build.BuildId)`.
+
+### Release Pipeline
+
+- Target: AKS
+
+#### Key Steps:
+
+- Applies Kubernetes deployment configurations from `path/to/application-manifest.yaml`.
+- Utilizes the Azure Resource Manager service connection for deployments.
+
+### Integration with Docker Hub
+
+- Service Connection Name: [Specify the service connection name]
+- Docker Repository: `softwaresimms/devops-project`
+
+### Integration with AKS
+
+- Cluster Name: `terraform-aks-cluster`
+- Resource Group: `networking-resource-group`
+
+## Validation Steps
+
+To ensure the functionality of our application and the robustness of the CI/CD pipeline, the following validation steps were performed:
+
+1. Monitored the status of pods in the AKS cluster post-deployment.
+2. Initiated port forwarding using `kubectl` to access the application.
+3. Accessed the application via the locally exposed address to verify correct operation.
+4. Performed end-to-end application testing to validate all features and endpoints.
+
+## Encountered Issues
+
+During the initial validation, we encountered an issue with the pipeline's ability to run parallel jobs. The error received was:
+
+```shell
+##[error]No hosted parallelism has been purchased or granted. To request a free parallelism grant, please fill out the following form [https://aka.ms/azpipelines-parallelism-request](https://aka.ms/azpipelines-parallelism-request)
