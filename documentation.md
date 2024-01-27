@@ -236,9 +236,27 @@ To ensure the functionality of our application and the robustness of the CI/CD p
 3. Accessed the application via the locally exposed address to verify correct operation.
 4. Performed end-to-end application testing to validate all features and endpoints.
 
-## Encountered Issues
+# AKS Cluster Monitoring Documentation
 
-During the initial validation, we encountered an issue with the pipeline's ability to run parallel jobs. The error received was:
+## Metrics Explorer Charts
 
-```shell
-##[error]No hosted parallelism has been purchased or granted. To request a free parallelism grant, please fill out the following form [https://aka.ms/azpipelines-parallelism-request](https://aka.ms/azpipelines-parallelism-request)
+- **Average Node CPU Usage**: Tracks CPU usage across nodes. Alert threshold: >80%.
+- **Average Node Memory Working Set**: Monitors active memory usage. Alert threshold: >80%.
+- **Disk Usage Percentage**: Measures used disk space to preempt storage issues. Alert threshold: >90%.
+- **Network IO**: Observes network traffic for irregular patterns.
+
+![Metrics Charts](path/to/metrics-charts-screenshot.png)
+
+## Log Analytics Insights
+
+### Sample Logs
+
+```plaintext
+# Node Resource Usage
+TimeGenerated [DateTime], Node [NodeName], CPUUsageMillicores: [Value], MemoryWorkingSetMB: [Value]
+
+# Pod Phase
+TimeGenerated [DateTime], PodName [Name], Namespace [Namespace], Status: [Running | Pending | Failed]
+
+# Container Warnings
+TimeGenerated [DateTime], ContainerID [ID], LogMessage: [Warning message]
