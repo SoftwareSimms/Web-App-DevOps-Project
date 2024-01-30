@@ -15,7 +15,7 @@ Welcome to the enhanced version of the Web-App DevOps Project! My name is Jack S
 
 ## Flowchart of Implementated DevOps Pipelines
 
-![DevOps Pipeline Architecture](/DevOps Pipeline Architecture.png)
+![DevOps Pipeline Architecture](/DevOps-Pipeline-Architecture.png)
 
 ### Pipeline Flow
 
