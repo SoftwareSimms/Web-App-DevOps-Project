@@ -2,32 +2,39 @@ from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
-import pyodbc
 import os
+import pyodbc
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
 
 # Initialise Flask App
 app = Flask(__name__)
 
-# database connection 
-server = 'devops-project-server.database.windows.net'
-database = 'orders-db'
-username = 'maya'
-password = 'AiCore1237'
-driver= '{ODBC Driver 18 for SQL Server}'
+# Initialize Azure Key Vault Client
+keyVaultName = os.environ["KEY_VAULT_NAME"]
+KVUri = f"https://{keyVaultName}.vault.azure.net"
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=KVUri, credential=credential)
+
+# Retrieve secrets from Azure Key Vault
+server = client.get_secret("serverName").value
+database = client.get_secret("DatabaseName").value
+username = client.get_secret("DatabaseUsername").value
+password = client.get_secret("DatabasePassword").value
+driver = '{ODBC Driver 18 for SQL Server}'
 
 # Create the connection string
-connection_string=f'Driver={driver};\
-    Server=tcp:{server},1433;\
-    Database={database};\
-    Uid={username};\
-    Pwd={password};\
-    Encrypt=yes;\
-    TrustServerCertificate=no;\
-    Connection Timeout=30;'
+connection_string = f'Driver={driver};'\
+                    f'Server=tcp:{server},1433;'\
+                    f'Database={database};'\
+                    f'Uid={username};'\
+                    f'Pwd={password};'\
+                    f'Encrypt=yes;'\
+                    f'TrustServerCertificate=no;'\
+                    f'Connection Timeout=30;'
 
 # Create the engine to connect to the database
-engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(connection_string))
+engine = create_engine(f"mssql+pyodbc:///?odbc_connect={pyodbc.connect(connection_string, autocommit=True)}")
 engine.connect()
 
 # Create the Session
@@ -46,7 +53,6 @@ class Order(Base):
     product_quantity = Column('Product Quantity', Integer)
     order_date = Column('Order Date', DateTime)
     shipping_date = Column('Shipping Date', DateTime)
-    
 
 # define routes
 # route to display orders

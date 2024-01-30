@@ -188,19 +188,6 @@ Should the need arise to provide external access to the application, we will:
 
 This document outlines the continuous integration and continuous deployment (CI/CD) pipeline for our project, detailing the configuration, settings, and validation steps. The pipeline is designed to integrate with Azure DevOps, Docker Hub, and Azure Kubernetes Service (AKS).
 
-## Pipeline Configuration
-
-### Source Repository
-
-- Platform: GitHub
-- Repository URL: [Provide the link to your GitHub repository]
-- Branch: main (triggered on each commit to the main branch)
-
-### Build Pipeline
-
-- Environment: Azure Pipelines
-- Agent Specification: ubuntu-latest
-
 #### Key Steps:
 
 - **Docker Build and Push:**
@@ -219,7 +206,6 @@ This document outlines the continuous integration and continuous deployment (CI/
 
 ### Integration with Docker Hub
 
-- Service Connection Name: [Specify the service connection name]
 - Docker Repository: `softwaresimms/devops-project`
 
 ### Integration with AKS
@@ -229,7 +215,7 @@ This document outlines the continuous integration and continuous deployment (CI/
 
 ## Validation Steps
 
-To ensure the functionality of our application and the robustness of the CI/CD pipeline, the following validation steps were performed:
+To ensure the functionality of the application and the robustness of the CI/CD pipeline, the following validation steps were performed:
 
 1. Monitored the status of pods in the AKS cluster post-deployment.
 2. Initiated port forwarding using `kubectl` to access the application.
