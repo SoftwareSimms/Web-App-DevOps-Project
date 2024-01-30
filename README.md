@@ -1,62 +1,93 @@
-# Web-App-DevOps-Project
+# Web-App DevOps Project - Enhanced Version by Jack Simms
 
-Welcome to the Web App DevOps Project repo! This application allows you to efficiently manage and track orders for a potential business. It provides an intuitive user interface for viewing existing orders and adding new ones.
+Welcome to the enhanced version of the Web-App DevOps Project! My name is Jack Simms, and in this fork of Maya's Python and Azure SQL application, I have introduced modern DevOps practices to improve the project's scalability, reliability, and deployment efficiency. This includes integrating Azure Kubernetes Service (AKS), using Terraform for infrastructure management, Docker for containerization, and implementing a robust version control workflow.
 
 ## Table of Contents
 
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Technology Stack](#technology-stack)
+- [Flowchart of Implementated DevOps Pipelines](#flowchart-of-implementated-devops-pipelines)
+- [Why These Enhancements?](#why-these-enhancements)
+- [Original Features](#original-features)
+- [Getting Started with Enhanced Version](#getting-started-with-enhanced-version)
+- [Technology Stack Enhancement](#technology-stack-enhancement)
+- [Documentation](#documentation)
 - [Contributors](#contributors)
 - [License](#license)
 
-## Features
+## Flowchart of Implementated DevOps Pipelines
 
-- **Order List:** View a comprehensive list of orders including details like date UUID, user ID, card number, store code, product code, product quantity, order date, and shipping date.
-  
-![Screenshot 2023-08-31 at 15 48 48](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/3a3bae88-9224-4755-bf62-567beb7bf692)
+![DevOps Pipeline Architecture](/DevOps_Pipeline_Architecture.png)
 
-- **Pagination:** Easily navigate through multiple pages of orders using the built-in pagination feature.
-  
-![Screenshot 2023-08-31 at 15 49 08](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/d92a045d-b568-4695-b2b9-986874b4ed5a)
+### Pipeline Flow
 
-- **Add New Order:** Fill out a user-friendly form to add new orders to the system with necessary information.
-  
-![Screenshot 2023-08-31 at 15 49 26](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/83236d79-6212-4fc3-afa3-3cee88354b1a)
+1. **Build Environment with Terraform**
+   - The process begins with the developer using Terraform, an infrastructure as code tool, to provision the required cloud infrastructure on Azure. This step ensures that the infrastructure setup is repeatable and consistent.
 
-- **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
+2. **Commit to Source Control**
+   - Developers commit their application code changes to a source code repository, such as GitHub. This represents the version control stage and is crucial for tracking changes and managing the codebase.
 
-## Getting Started
+3. **Pull Secrets from Azure Key Vaults**
+   - Secrets, like API keys and database credentials, are securely pulled from Azure Key Vaults during the pipeline execution. Azure Key Vaults is designed to protect cryptographic keys and secrets used by cloud applications.
+
+4. **Build Docker Containers with Azure Pipelines**
+   - Azure Pipelines automates the containerization of the application by building Docker containers. This step packages the application with all its dependencies, ensuring consistency across different environments.
+
+5. **Push Containers to Docker Hub**
+   - The built Docker container images are then pushed to a container registry, in this case, Docker Hub, which is a service for managing and sharing container images.
+
+6. **Deploy Application to Azure Kubernetes Service (AKS)**
+   - The AKS cluster receives the containerized application for deployment. Azure Kubernetes Service facilitates the deployment, management, and scaling of containerized applications with Kubernetes.
+
+7. **Monitor Application with Azure Tools**
+   - Post-deployment, tools such as Azure Monitor, Application Insights, and Log Analytics Workspaces are used to monitor the health and performance of the application. They provide valuable insights to detect and troubleshoot potential issues.
+
+
+
+## Why These Enhancements?
+
+The enhancements made to the original Web-App DevOps Project are designed to:
+
+- **Improve Scalability:** By using AKS, the application can now handle increased load more efficiently.
+- **Enhance Reliability:** Containerization with Docker ensures that the application runs consistently across different environments.
+- **Automate Infrastructure Management:** Terraform allows for automated and reproducible infrastructure setups, reducing manual errors and saving time.
+- **Streamline Development:** The updated version control workflow fosters better collaboration and easier feature integration.
+
+## Original Features
+
+- **Order List, Pagination, Add New Order, Data Validation:** The core functionalities of viewing, adding, and validating order data remain intact and are now supported by a more robust backend infrastructure.
+
+## Getting Started with Enhanced Version
 
 ### Prerequisites
 
-For the application to succesfully run, you need to install the following packages:
+- Docker installed on your machine.
+- Terraform installed on your machine.
+- An Azure account for AKS.
+- Git for cloning the repository.
 
-- flask (version 2.2.2)
-- pyodbc (version 4.0.39)
-- SQLAlchemy (version 2.0.21)
-- werkzeug (version 2.2.3)
+### Setup and Deployment
 
-### Usage
+1. **Clone the Repository:** Start by cloning this enhanced repository to your local system.
+2. **Docker Setup:** Build the Docker image using the provided Dockerfile and run the container.
+3. **Terraform Initialization:** Initialize Terraform to set up the necessary infrastructure on Azure.
+4. **AKS Deployment:** Deploy the application on AKS using the provided Kubernetes manifests.
+5. **Local Testing:** Follow the steps for local testing to ensure everything is set up correctly.
 
-To run the application, you simply need to run the `app.py` script in this repository. Once the application starts you should be able to access it locally at `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
+## Technology Stack Enhancement
 
-1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
+- **Docker:** For containerization, ensuring consistency across development, testing, and production environments.
+- **Azure Kubernetes Service (AKS):** For orchestration, managing containers, scaling, and automated rollouts.
+- **Terraform:** For Infrastructure as Code (IaC), enabling consistent and repeatable cloud environment setups.
+- **GitHub:** Advanced version control to better manage and track changes.
 
-2. **Add New Order Page:** Click on the "Add New Order" tab to access the order form. Complete all required fields and ensure that your entries meet the specified criteria.
+## Documentation
 
-## Technology Stack
+Detailed documentation is available in this repository, covering aspects such as version control strategies, containerization steps, Terraform configurations, Kubernetes deployment processes, and Azure Key Vault integration.
 
-- **Backend:** Flask is used to build the backend of the application, handling routing, data processing, and interactions with the database.
+## Contributors
 
-- **Frontend:** The user interface is designed using HTML, CSS, and JavaScript to ensure a smooth and intuitive user experience.
-
-- **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
-
-## Contributors 
-
-- [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+- [Jack Simms](https://github.com/softwaresimms) - Enhancements and integration of DevOps practices.
+- [Maya Iuga](https://github.com/maya-a-iuga) - Original creator of the Web-App DevOps Project.
 
 ## License
 
-This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
+This project, like the original, is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.

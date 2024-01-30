@@ -1,248 +1,124 @@
-# Web-App DevOps Project Documentation
+# Web-App DevOps Project Documentation - Comprehensive Overview
 
-Welcome to my repository where I manage the infrastructure for an Azure Kubernetes Service (AKS) deployment using Terraform. The documentation here details the version control workflow, containerisation practices with Docker, and the Terraform configurations for setting up network infrastructure and the AKS cluster.
+## Introduction
+Welcome to the comprehensive documentation of my Web-App DevOps Project. This journey entailed managing the infrastructure for an Azure Kubernetes Service (AKS) deployment using Terraform and involved mastering version control, Docker containerisation, and AKS cluster setup. This document serves as a narrative of my process, decisions, and the detailed tasks I performed, showcasing the skills essential for a DevOps career.
 
 ## Version Control Workflow
 
-### Setting the Stage
-- **Repository Forking**: I forked the main repository on GitHub for my independent development work.
+### Initial Setup
+- **Repository Forking:** I began by forking the main GitHub repository, setting the stage for independent development and experimentation.
 
-### Developing New Features
-- **Issue Tracking**: I initiated new issues to track enhancements such as adding a 'Delivery Date' field to our Azure SQL database.
-- **Branch Strategy**: For each feature, like `feature/add-delivery-date`, I created a separate branch from the main.
-- **Coding and Committing**: I implemented the 'Delivery Date' feature in `app.py`, updated `orders.html` for its display, and committed the changes with detailed messages.
-- **Code Review**: I submitted pull requests for peer review before merging any code into the main branch.
+### Feature Development
+- **Issue Tracking:** Leveraging GitHub's issue tracking, I systematically addressed enhancements, like adding a 'Delivery Date' to the Azure SQL database.
+- **Branch Strategy:** For each feature (e.g., `feature/add-delivery-date`), I created a dedicated branch, ensuring organized and focused development.
+- **Coding and Committing:** Features like the 'Delivery Date' were carefully coded in `app.py`, reflected in `orders.html`, and committed with descriptive messages.
+- **Code Review:** Pull requests facilitated peer reviews, ensuring quality and collaborative improvement before merging into the main branch.
 
-### Integrating Features
-- **Merging**: I merged approved features into the main branch after thorough reviews.
-
-### Feature Reversion
-- **Reversion Decision**: When a feature was deemed unnecessary, I made the decision to revert.
-- **Reversion Process**: I created a branch `revert/delivery-date-feature` and performed a `git revert` with a clear explanation in the commit message.
-- **Reversion Finalisation**: I merged the revert changes back into the main branch post-review.
+### Integration and Reversion
+- **Merging:** Successfully reviewed features were merged into the main branch, symbolizing completion and integration.
+- **Feature Reversion:** For features deemed unnecessary, I created reversion branches (e.g., `revert/delivery-date-feature`) and used `git revert` to rollback changes.
 
 ### Best Practices
-- **Documentation**: I meticulously documented each step to maintain clarity.
-- **Testing**: Prior to pushing or creating pull requests, I conducted local tests to ensure seamless functionality.
+- **Documentation:** Each step was meticulously documented to maintain transparency and clarity.
+- **Testing:** I conducted thorough local tests before pushes or pull requests to ensure functionality.
 
 ## Containerisation with Docker
 
-### Objective
-- I containerised the application to guarantee consistency across environments and simplify deployment procedures.
-
-### Crafting the Dockerfile
-- **Base Image Selection**: I chose a base image such as `python:3.8-slim` for its balance between functionality and size.
-- **Workspace Configuration**: I documented how to establish the working directory within the container.
-- **Application File Transfer**: I included instructions for transferring application files into the container.
-- **Dependency Management**: I detailed the process for installing both system and Python dependencies.
-- **Port Exposure**: I specified which ports need to be exposed for the application.
-- **Application Execution**: I provided the command to run the application inside the container.
+### Building the Docker Environment
+- **Base Image Selection:** Chose `python:3.8-slim` for its optimal balance of functionality and size.
+- **Workspace Configuration:** Documented the setup of the working directory within the container.
+- **File Transfer:** Included steps for transferring application files into the container.
+- **Dependency Management:** Outlined the installation process for both system and Python dependencies.
+- **Port Exposure:** Defined the necessary ports for application access.
+- **Execution Command:** Provided commands to run the application within the container.
 
 ### Docker Command Guide
-- **Image Construction**: I described the process to build the Docker image from the Dockerfile.
-- **Container Deployment**: I detailed how to initiate and run the container, including port mapping.
-- **Image Tagging and Pushing**: I explained the method for tagging images for Docker Hub and pushing them.
+- **Image Construction:** Described the Docker image build process.
+- **Container Deployment:** Detailed the steps for container initiation and running, including port mapping.
+- **Image Management:** Explained image tagging for Docker Hub and subsequent pushing.
 
 ### Clean-Up Procedures
-- **Container Housekeeping**: Commands for listing and removing containers.
-- **Image Management**: Instructions for listing and deleting images to conserve disk space.
+- **Container and Image Management:** Documented commands for container and image housekeeping to maintain an organized environment.
 
 ## Terraform Azure Network Infrastructure Configuration
 
-### Overview
-- I've provided a detailed step-by-step guide to set up the AKS infrastructure using Terraform.
+### Configuration Overview
+- **Variables Definition:** Defined key variables like resource group naming and Azure deployment region in `variables.tf`.
+- **Resource Management:** In `main.tf`, I outlined resource group creation, virtual network setup, subnet allocation, and network security protocols.
+- **Output Variables:** Provided essential outputs like resource IDs and names for efficient post-deployment management.
 
-### Variables (`variables.tf`)
-- **Resource Group Naming**: I've outlined the Azure Resource Group details.
-- **Deployment Region Specification**: The Azure region for resource deployment is specified.
-- **Virtual Network Addressing**: I've defined the VNet address space.
+## AKS Cluster Setup with Terraform
 
-### Resource Definitions (`main.tf`)
-- **Resource Grouping**: I've organised resources under a single resource group.
-- **Virtual Network Creation**: An isolated network for AKS is established.
-- **Subnet Allocation**: I've allocated network segments within the VNet for AKS components.
-- **Network Security Protocols**: Security rules are managed through the Network Security Group.
+### Configuring the Provider
+- **Azure Specifics:** Utilized `azurerm` provider block to interface with Azure's infrastructure.
+- **Resource and Node Pool Definition:** Detailed the AKS cluster setup including cluster name, location, resource group, DNS prefix, default node pool, and VM sizes.
 
-### Output Variables (`outputs.tf`)
-- I've provided outputs for resource IDs and names post-deployment, including the Virtual Network ID and subnet IDs. These outputs are crucial for referencing and managing the deployed resources efficiently.
+### Service Principal Setup
+- **Secure Authentication:** Established client ID and secret for secure interaction with Azure services.
 
-## Terraform Configuration for Azure Kubernetes Service (AKS) Cluster
+### Main Terraform Configuration
+- **Provider and Variable Setup:** Configured the Azure provider and defined key variables for secure Azure access.
+- **Networking and Cluster Module Integration:** Integrated networking and cluster modules for a complete AKS setup.
 
-### Provider Block
-- **azurerm**: This block specifies that Azure is the chosen cloud provider for this Terraform configuration. The use of a specific provider like `azurerm` is crucial because it dictates how Terraform interacts with the respective cloud infrastructure, ensuring that resources are managed in a manner consistent with Azure's architecture and services.
+### Terraform Initialization and Application
+- **Terraform Commands:** Executed `terraform init` and `terraform apply` to create the AKS infrastructure.
+- **State File Security:** Ensured the Terraform state file was securely managed and excluded from version control.
 
-### Resource: azurerm_kubernetes_cluster
-- **name**: The AKS cluster's name is defined here, sourced from a variable. This practice of using variables for resource names enhances flexibility and reusability of the Terraform code.
-- **location**: This parameter sets the geographical location for the AKS cluster, aligning resource deployment with regional preferences and compliance requirements.
-- **resource_group_name**: Specifies the Azure resource group under which the AKS cluster will be managed. Organising resources into groups is vital for efficient resource management and cost tracking.
-- **dns_prefix**: The DNS prefix for the AKS cluster contributes to forming the Fully Qualified Domain Name (FQDN) for the Kubernetes API server, a crucial element for network communication and service discovery.
+## Kubernetes Deployment for Flask Web Application
 
-### Default Node Pool
-- **name**: The name for the default node pool is specified, which is key to identifying and managing the node pool within the AKS cluster.
-- **node_count**: Defines the number of nodes (Virtual Machines) in the node pool, a critical factor for scaling and resource allocation.
-- **vm_size**: The size of the Virtual Machines in the node pool is set, impacting the cluster's performance and resource availability.
+### Deployment Strategy
+- **Manifests Utilization:** Used deployment and service manifests for the Flask application.
+- **Deployment Strategy:** Adopted RollingUpdate for zero downtime and efficient resource use during updates.
 
-### Service Principal
-- **client_id** and **client_secret**: These credentials are for the service principal used by AKS to interact with other Azure services. The use of a service principal is fundamental for secure and scoped access to Azure resources.
+### Testing and Validation
+- **Port Forwarding and Internal Testing:** Conducted thorough testing through port forwarding and internal application navigation.
+- **Application Distribution:** Planned for internal DNS setup and Ingress Controller implementation for broader access.
 
-### Outputs for Azure Kubernetes Service (AKS) Cluster Module
+### External Access Considerations
+- **Service Type and Security:** Discussed potential external access strategies including service type change and implementing strong authentication and TLS.
 
-#### Introduction
-- The `outputs.tf` file in the AKS cluster module defines important output variables. These variables are essential for capturing and making use of key information about the provisioned AKS cluster.
+## CI/CD Pipeline Documentation
 
-#### Output Variables
-- **`aks_cluster_name` and `aks_cluster_id`**: These provide the name and unique identifier of the AKS cluster, essential for referencing and managing the cluster within Azure.
-- **`aks_kubeconfig`**: This output captures the Kubernetes configuration file, pivotal for interacting with and managing the AKS cluster using tools like `kubectl`.
+### Integration with Azure DevOps and Docker Hub
+- **Pipeline Configuration:** Outlined the CI/CD pipeline's integration with Azure DevOps, Docker Hub, and AKS.
+- **Validation Steps:** Described the validation steps including monitoring pod status, initiating port forwarding, and performing end-to-end application testing.
 
-## Main Terraform Configuration for Azure Kubernetes Service (AKS)
+## AKS Cluster Monitoring
 
-### Overview
-- The main Terraform configuration (`main.tf`) in the `aks-terraform` project directory is a central piece, defining the Azure provider and input variables for secure authentication.
+### Monitoring Tools and Strategies
+- **Metrics Explorer Charts:** Set up and monitored key metrics like CPU usage, memory working set, disk usage, and network IO.
+- **Log Analytics Insights:** Provided sample logs for node resource usage, pod phase, and container warnings.
 
-### Azure Provider Setup
-- **Provider Block**:
-  - The `azurerm` provider block is configured with service principal credentials, enabling Terraform to authenticate and manage resources within Azure securely.
+## Azure Key Vault Implementation
 
-### Defining Input Variables (`variables.tf`)
-- **client_id, client_secret, subscription_id, and tenant_id**: These variables are defined for the Azure Service Principal, ensuring secure and specific access to Azure resources.
+### Setting Up Azure Key Vault
+- **Objective:** To enhance the security of the application by storing sensitive information like database credentials securely.
+- **Implementation:** I created an Azure Key Vault to securely manage these sensitive details, replacing hardcoded values in the application.
 
-### Secure Credential Management
-- It's advised to store `client_id` and `client_secret` as environment variables. This approach safeguards credentials by keeping them out of the Terraform configuration files.
+### Assigning Key Vault Administrator Role
+- **Purpose:** To manage the Key Vault and its secrets effectively.
+- **Action:** Assigned the Key Vault Administrator role to my Microsoft Entra ID user, granting the necessary permissions for managing the secrets.
 
-### Networking Module Integration in Main Terraform Configuration
+### Creating Secrets in the Key Vault
+- **Goal:** To securely store critical credentials such as server name, username, password, and database name, replacing hardcoded credentials in the application code.
+- **Process:** I created four secrets in the Key Vault corresponding to these critical credentials.
 
-#### Adding the Networking Module in `main.tf`
-- **Module "networking"**:
-  - The path to the networking module is specified, and input variables like `resource_group_name`, `location`, and `vnet_address_space` are set. This module is crucial for setting up the foundational network infrastructure for the AKS cluster.
+### Enabling Managed Identity for AKS
+- **Rationale:** To allow secure and authenticated interactions between the AKS cluster and Azure Key Vault.
+- **Method:** Enabled a managed identity for the AKS cluster, facilitating a secure method of accessing the Key Vault without exposing sensitive credentials.
 
-#### Integrating Cluster Module in Main Configuration
+### Assigning Key Vault Secrets Officer Role
+- **Objective:** To permit the AKS cluster to retrieve and manage the secrets stored in the Key Vault.
+- **Execution:** Assigned the Key Vault Secrets Officer role to the AKS managed identity, providing it with the necessary access rights.
 
-##### Configuration in `main.tf`
-- **Module "cluster"**:
-  - The cluster module's source path is defined along with essential input variables. These include `cluster_name`, `location`, `dns_prefix`, `kubernetes_version`, and service principal details. This module is central to creating and configuring the AKS cluster itself.
+### Application Code Integration
+- **Purpose:** To enable the application to utilize the secrets stored in Azure Key Vault for database connectivity.
+- **Implementation:** Integrated Azure Identity and Azure Key Vault libraries into the Python application code. Updated the Docker image requirements to include these new libraries, ensuring the application had all necessary dependencies for interacting with the Key Vault.
 
-### Initializing and Applying Terraform Configuration
+### Local Testing with Azure Key Vault
+- **Testing Goal:** To confirm the application's successful integration with Azure Key Vault and its ability to retrieve database connection details securely.
+- **Testing Process:** Conducted thorough testing of the application locally, ensuring that it could securely access and use the credentials stored in the Key Vault.
 
-#### Steps
-- **Initialize Terraform**: Run `terraform init` to prepare the project.
-- **Apply Configuration**: Use `terraform apply` to create the infrastructure. This includes both networking resources and the AKS cluster.
-- **Secure State File**: The Terraform state file is added to `.gitignore` for security.
-
-By following these procedures, you can effectively use Terraform to create and manage a robust AKS cluster in Azure. This combination of detailed documentation and structured Terraform code ensures a streamlined and secure deployment process.
-
-## Terraform AKS Cluster Management
-
-### Managing the AKS Cluster
-- After deploying the AKS cluster using Terraform, it is crucial to manage and interact with the cluster efficiently.
-- **Azure CLI**: The Azure Command-Line Interface (CLI) is used for obtaining credentials to interact with the AKS cluster. For example, the command `az aks get-credentials --resource-group <resource-group-name> --name <your-aks-cluster-name>` configures the local `kubectl` environment to communicate with your AKS cluster.
-- **Kubernetes Version**: To align with Azure's offerings and ensure compatibility, the Kubernetes version used in the cluster (e.g., `1.26.6`) is specified. This version should be periodically reviewed and updated as needed.
-- **Verifying the Cluster**: Once connected, you can use `kubectl get nodes` to verify the nodes in your AKS cluster. This step confirms that the cluster is operational and that `kubectl` is correctly configured.
-
-# Kubernetes Deployment for Flask Web Application
-
-This document outlines the process and configuration used for deploying a Flask web application on an Azure Kubernetes Service (AKS) cluster using Kubernetes manifests, including the rationale behind the deployment strategy and how the application is tested and validated post-deployment.
-
-## Deployment and Service Manifests
-
-The Flask application is containerized using Docker and deployed to AKS with the following Kubernetes manifests:
-
-- **Deployment Manifest**: Defined as `flask-app-deployment`, it manages the lifecycle of the application pods. The manifest specifies 2 replicas for high availability and uses a label selector `app: flask-app` to manage the pods. It points to the Docker image on Docker Hub, with the image version tagged as `latest`. Each pod exposes port 5000, which is the application's port.
-
-- **Service Manifest**: Named `flask-app-service`, it creates an internal service of type `ClusterIP` within the AKS cluster. It uses the same label selector `app: flask-app` to route traffic to the correct pods. The service listens on port 80 and routes traffic to `targetPort` 5000 on the pods.
-
-## Deployment Strategy
-
-The deployment strategy chosen is `RollingUpdate`. This strategy incrementally updates pods instances with new ones, which are created and scheduled before the old ones are terminated. The key benefits of this strategy include:
-
-- **Zero Downtime**: Ensures at least one instance of the pod is running, thus providing service continuity.
-- **Rollback Capabilities**: If something goes wrong, Kubernetes will stop the rollout and rollback to the previous version.
-- **Resource Efficiency**: Only a subset of resources are required during the update, which means that the system doesn't need to double its resource usage.
-
-This strategy aligns with our application's requirement for high availability and the need for updates without service interruption.
-
-## Testing and Validation
-
-Post-deployment, the application was validated by:
-
-- **Port Forwarding**: Temporary port forwarding to `localhost` allowed immediate interaction with the application for testing.
-- **Internal Testing**: Navigating through the application's functionality, especially the orders table and Add Order feature, ensured that the application behaves as expected within the AKS cluster.
-- **Log Inspection**: Checking the logs from the application's pods helped confirm there were no hidden issues.
-
-## Internal Distribution
-
-To distribute the application to other internal users without relying on port forwarding, we plan to:
-
-- **Internal DNS**: Set up an internal DNS to point to the ClusterIP of the service.
-- **Ingress Controller**: Implement an Ingress controller that provides HTTP routing to the service.
-- **Access Policies**: Define RBAC policies to control access within the AKS cluster.
-
-## External Access (If Needed)
-
-Should the need arise to provide external access to the application, we will:
-
-- **Change Service Type**: Update the service from `ClusterIP` to `LoadBalancer` to provide an external IP.
-- **Implement Authentication**: Ensure the application has strong authentication and authorization mechanisms.
-- **Use TLS**: Secure communication with the application using TLS encryption.
-
-# CI/CD Pipeline Documentation
-
-This document outlines the continuous integration and continuous deployment (CI/CD) pipeline for our project, detailing the configuration, settings, and validation steps. The pipeline is designed to integrate with Azure DevOps, Docker Hub, and Azure Kubernetes Service (AKS).
-
-#### Key Steps:
-
-- **Docker Build and Push:**
-  - Builds the Docker image from the Dockerfile.
-  - Pushes the image to Docker Hub using the service connection established with Docker Hub.
-  - Tags the image with both latest and the specific `$(Build.BuildId)`.
-
-### Release Pipeline
-
-- Target: AKS
-
-#### Key Steps:
-
-- Applies Kubernetes deployment configurations from `path/to/application-manifest.yaml`.
-- Utilizes the Azure Resource Manager service connection for deployments.
-
-### Integration with Docker Hub
-
-- Docker Repository: `softwaresimms/devops-project`
-
-### Integration with AKS
-
-- Cluster Name: `terraform-aks-cluster`
-- Resource Group: `networking-resource-group`
-
-## Validation Steps
-
-To ensure the functionality of the application and the robustness of the CI/CD pipeline, the following validation steps were performed:
-
-1. Monitored the status of pods in the AKS cluster post-deployment.
-2. Initiated port forwarding using `kubectl` to access the application.
-3. Accessed the application via the locally exposed address to verify correct operation.
-4. Performed end-to-end application testing to validate all features and endpoints.
-
-# AKS Cluster Monitoring Documentation
-
-## Metrics Explorer Charts
-
-- **Average Node CPU Usage**: Tracks CPU usage across nodes. Alert threshold: >80%.
-- **Average Node Memory Working Set**: Monitors active memory usage. Alert threshold: >80%.
-- **Disk Usage Percentage**: Measures used disk space to preempt storage issues. Alert threshold: >90%.
-- **Network IO**: Observes network traffic for irregular patterns.
-
-![Metrics Charts](path/to/metrics-charts-screenshot.png)
-
-## Log Analytics Insights
-
-### Sample Logs
-
-```plaintext
-# Node Resource Usage
-TimeGenerated [DateTime], Node [NodeName], CPUUsageMillicores: [Value], MemoryWorkingSetMB: [Value]
-
-# Pod Phase
-TimeGenerated [DateTime], PodName [Name], Namespace [Namespace], Status: [Running | Pending | Failed]
-
-# Container Warnings
-TimeGenerated [DateTime], ContainerID [ID], LogMessage: [Warning message]
+### Deployment to AKS with Key Vault Integration
+- **Deployment Objective:** To deploy the application on the AKS cluster with Azure Key Vault integration, ensuring secure access to database credentials.
+- **Deployment Method:** Utilized the Azure DevOps CI/CD pipeline for deploying the modified application to the AKS cluster. Conducted comprehensive testing in the AKS environment to validate the application's functionality and its secure interaction with the Key Vault.

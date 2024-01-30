@@ -25,8 +25,8 @@ RUN pip install --upgrade pip setuptools
 # Step 4 - Install Python packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-# Step 5 - Expose port (assuming your app runs on port 8000)
-EXPOSE 8000
+# Step 5 - Expose port (assuming your app runs on port 5000)
+EXPOSE 5000
 
 # Step 6 - Define Startup Command
 CMD ["python", "app.py"]
